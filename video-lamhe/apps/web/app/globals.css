@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens (Section 4). Values are RGB channels for Tailwind opacity modifiers. */
+@layer base {
+  :root {
+    --ground: 251 249 246; /* #FBF9F6 */
+    --surface: 255 255 255; /* #FFFFFF */
+    --sand: 243 238 230; /* #F3EEE6 */
+    --ink: 23 20 15; /* #17140F */
+    --muted: 94 87 77; /* #5E574D */
+    --line: 232 226 216; /* #E8E2D8 */
+    --primary: 23 20 15; /* #17140F */
+    --primary-foreground: 251 249 246;
+    --gold: 176 125 43; /* #B07D2B */
+    --gold-foreground: 23 20 15;
+    --gold-text: 127 90 28; /* #7F5A1C */
+    --band: 23 20 15; /* #17140F */
+    --band-foreground: 244 239 230;
+    --whatsapp: 37 211 102; /* #25D366 */
+    --whatsapp-foreground: 6 33 15; /* #06210F */
+    --danger: 180 35 24; /* #B42318 */
+    --success: 6 118 71; /* #067647 */
+
+    --hero-overlay: 0.45;
+    --shadow-soft: 0 1px 2px rgb(23 20 15 / 0.04), 0 4px 16px rgb(23 20 15 / 0.06);
+    --shadow-lift: 0 2px 4px rgb(23 20 15 / 0.05), 0 16px 40px rgb(23 20 15 / 0.1);
+
+    color-scheme: light;
+  }
+
+  .dark {
+    --ground: 18 17 16; /* #121110 */
+    --surface: 27 25 22; /* #1B1916 */
+    --sand: 38 35 31; /* #26231F */
+    --ink: 244 239 230; /* #F4EFE6 */
+    --muted: 179 169 153; /* #B3A999 */
+    --line: 50 46 40; /* #322E28 */
+    --primary: 244 239 230; /* #F4EFE6 */
+    --primary-foreground: 18 17 16;
+    --gold: 212 175 106; /* #D4AF6A */
+    --gold-foreground: 18 17 16;
+    --gold-text: 226 194 133; /* #E2C285 */
+    --band: 31 28 24; /* #1F1C18 */
+    --band-foreground: 244 239 230;
+    --danger: 249 112 102; /* #F97066 */
+    --success: 71 205 137; /* #47CD89 */
+
+    --hero-overlay: 0.55;
+    --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px rgb(0 0 0 / 0.25);
+    --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 16px 40px rgb(0 0 0 / 0.4);
+
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ground font-sans text-ink antialiased;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif font-normal tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-gold ring-offset-2 ring-offset-ground;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Italic gold accent word inside big serif headings: <h1>Wedding stories, <em class="accent">from above.</em></h1> */
+  .accent {
+    @apply italic text-gold-text;
+  }
+}

@@ -1,0 +1,12 @@
+import { defineConfig } from 'tsup';
+
+export default defineConfig({
+  entry: ['src/index.ts'],
+  format: ['esm'],
+  target: 'node20',
+  platform: 'node',
+  sourcemap: true,
+  clean: true,
+  // Bundle the workspace package (it ships TS source); keep real deps external.
+  noExternal: ['@video-lamhe/shared'],
+});

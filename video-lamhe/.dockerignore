@@ -1,0 +1,25 @@
+# Build context for apps/api/Dockerfile and apps/web/Dockerfile (both build from the repo root).
+**/node_modules
+**/.next
+**/dist
+**/coverage
+**/out
+**/*.tsbuildinfo
+**/test-results
+**/playwright-report
+.git
+.github
+.vscode
+.idea
+.claude
+*.md
+!apps/web/**/*.md
+
+# Secrets never go into an image — pass them at runtime (docker run --env-file / platform env vars).
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+npm-debug.log*
+.DS_Store
