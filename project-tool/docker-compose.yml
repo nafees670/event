@@ -1,0 +1,101 @@
+# Development stack. Copy .env.example to .env first (optional: dev defaults work without it).
+name: pm-suite
+
+x-backend: &backend
+  build:
+    context: ./backend
+    args:
+      INSTALL_DEV: "true"
+  image: pm-suite-backend:dev
+  env_file:
+    - path: .env
+      required: false
+  environment: &backend-env
+    DJANGO_SETTINGS_MODULE: config.settings.dev
+    POSTGRES_HOST: db
+    POSTGRES_DB: ${POSTGRES_DB:-pm_suite}
+    POSTGRES_USER: ${POSTGRES_USER:-pm_suite}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pm_suite_dev_password}
+    REDIS_URL: redis://redis:6379/0
+    CELERY_BROKER_URL: redis://redis:6379/1
+    CELERY_RESULT_BACKEND: redis://redis:6379/2
+    MEDIA_ROOT: /app/media
+    PRIVATE_STORAGE_ROOT: /data/private
+  volumes:
+    - ./backend:/app
+    - private_files:/data/private
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pm_suite}
+      POSTGRES_USER: ${POSTGRES_USER:-pm_suite}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pm_suite_dev_password}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    <<: *backend
+    environment:
+      <<: *backend-env
+      RUN_MIGRATIONS: "1"
+    command: ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
+
+  celery:
+    <<: *backend
+    command: ["celery", "-A", "config", "worker", "-l", "info"]
+
+  celery-beat:
+    <<: *backend
+    command: ["celery", "-A", "config", "beat", "-l", "info", "--schedule", "/tmp/celerybeat-schedule"]
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    image: pm-suite-frontend:dev
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      BACKEND_URL: http://backend:8000
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "${HTTP_PORT:-80}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  pgdata:
+  private_files:

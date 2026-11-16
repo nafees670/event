@@ -1,0 +1,16 @@
+Django~=5.1.0
+djangorestframework~=3.15.0
+djangorestframework-simplejwt~=5.4.0
+django-filter~=24.3
+drf-spectacular~=0.28.0
+django-cors-headers~=4.6
+channels~=4.2
+channels-redis~=4.2
+# channels_redis is not compatible with redis-py 7 yet
+redis>=5.0,<7
+celery~=5.4.0
+psycopg[binary]~=3.2
+gunicorn~=23.0
+uvicorn[standard]~=0.32
+uvicorn-worker~=0.3
+Pillow~=11.0

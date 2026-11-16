@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* Dark mode follows the .dark class on <html>, set by the theme script before first paint. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-2: #f2f4f7;
+  --surface-3: #e9ecf1;
+  --border: #e4e7ec;
+  --border-strong: #d0d5dd;
+  --fg: #101828;
+  --muted: #5d6779;
+  --subtle: #98a2b3;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-fg: #ffffff;
+  --primary-soft: #eef0ff;
+  --primary-soft-fg: #3f37c9;
+  --ring: #6366f1;
+  --overlay: rgb(16 24 40 / 0.45);
+  --shadow-color: 220 40% 20%;
+  /* Charts: validated categorical order (dataviz reference palette), sequential blue, status. */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --seq-fill: #2a78d6;
+  --seq-track: #cde2fb;
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-critical: #d03b3b;
+  --chart-grid: #e9ecf1;
+  --chart-axis: #98a2b3;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0b0c10;
+  --surface: #121318;
+  --surface-2: #191b22;
+  --surface-3: #22252e;
+  --border: #252832;
+  --border-strong: #343846;
+  --fg: #ecedf1;
+  --muted: #9aa0ae;
+  --subtle: #676d7c;
+  --primary: #6d6af5;
+  --primary-hover: #8280f7;
+  --primary-fg: #ffffff;
+  --primary-soft: rgb(109 106 245 / 0.14);
+  --primary-soft-fg: #b4b3fb;
+  --ring: #8280f7;
+  --overlay: rgb(0 0 0 / 0.6);
+  --shadow-color: 0 0% 0%;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --seq-fill: #3987e5;
+  --seq-track: #1d2a3d;
+  --chart-grid: #252832;
+  --chart-axis: #676d7c;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-fg: var(--primary-soft-fg);
+  --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
+  --color-seq-fill: var(--seq-fill);
+  --color-seq-track: var(--seq-track);
+  --color-status-good: var(--status-good);
+  --color-status-warning: var(--status-warning);
+  --color-status-critical: var(--status-critical);
+  --shadow-card: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 1px 3px hsl(var(--shadow-color) / 0.04);
+  --shadow-pop: 0 12px 32px -8px hsl(var(--shadow-color) / 0.22), 0 4px 8px -4px hsl(var(--shadow-color) / 0.1);
+  --animate-fade-in: fade-in 160ms ease-out;
+  --animate-scale-in: scale-in 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-in-left: slide-in-left 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-in-right: slide-in-right 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-up: slide-up 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.96) translateY(4px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes slide-in-left {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes slide-in-right {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection {
+  background: var(--primary-soft);
+  color: var(--primary-soft-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

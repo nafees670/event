@@ -1,0 +1,23 @@
+# Env files hold secrets: only the example is committed.
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+backend/media/
+backend/private/
+backend/staticfiles/
+celerybeat-schedule*
+
+# Node
+node_modules/
+frontend/.next/
+frontend/out/
+*.tsbuildinfo
+next-env.d.ts
+
+.DS_Store
